@@ -1,4 +1,4 @@
-package com.example.base.ui.view;
+package com.example.application.assignment.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.notification.Notification;
