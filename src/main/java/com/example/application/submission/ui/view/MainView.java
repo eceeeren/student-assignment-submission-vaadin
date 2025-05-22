@@ -1,6 +1,6 @@
-package com.example.application.assignment.ui.view;
+package com.example.application.submission.ui.view;
 
-import com.example.application.assignment.ui.component.ViewToolbar;
+import com.example.application.submission.ui.component.ViewToolbar;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;

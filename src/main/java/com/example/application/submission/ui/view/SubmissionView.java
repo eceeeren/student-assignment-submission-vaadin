@@ -1,7 +1,7 @@
-package com.example.application.assignment.ui.view;
+package com.example.application.submission.ui.view;
 
-import com.example.application.assignment.ui.view.assignment.AssignmentView;
-import com.example.application.assignment.ui.view.student.StudentView;
+import com.example.application.submission.ui.view.assignment.AssignmentView;
+import com.example.application.submission.ui.view.student.StudentView;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.component.tabs.TabSheetVariant;

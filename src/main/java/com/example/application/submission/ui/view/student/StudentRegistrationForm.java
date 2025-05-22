@@ -1,4 +1,4 @@
-package com.example.application.assignment.ui.view.student;
+package com.example.application.submission.ui.view.student;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

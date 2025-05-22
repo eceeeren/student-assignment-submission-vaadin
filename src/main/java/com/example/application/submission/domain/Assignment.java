@@ -1,4 +1,4 @@
-package com.example.application.assignment.domain;
+package com.example.application.submission.domain;
 
 
 import jakarta.persistence.Entity;

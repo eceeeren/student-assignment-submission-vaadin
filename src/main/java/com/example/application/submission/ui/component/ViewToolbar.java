@@ -1,4 +1,4 @@
-package com.example.application.assignment.ui.component;
+package com.example.application.submission.ui.component;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;

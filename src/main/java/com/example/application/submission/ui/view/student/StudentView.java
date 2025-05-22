@@ -1,4 +1,4 @@
-package com.example.application.assignment.ui.view.student;
+package com.example.application.submission.ui.view.student;
 
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
