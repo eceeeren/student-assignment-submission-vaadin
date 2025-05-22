@@ -34,7 +34,7 @@ public final class MainLayout extends AppLayout {
         var appLogo = VaadinIcon.CUBES.create();
         appLogo.addClassNames(TextColor.PRIMARY, IconSize.LARGE);
 
-        var appName = new Span("Student Assignment Submission Vaadin");
+        var appName = new Span("Student Assignment Submission");
         appName.addClassNames(FontWeight.SEMIBOLD, FontSize.LARGE);
 
         var header = new Div(appLogo, appName);
