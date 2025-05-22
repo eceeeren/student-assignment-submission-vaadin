@@ -1,13 +1,18 @@
 package com.example.application.submission.ui.view.student;
 
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.html.Div;
+import com.example.application.submission.service.StudentService;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class StudentView extends VerticalLayout {
 
-    public StudentView() {
+    private final StudentService studentService;
+    private StudentRegistrationForm registrationForm;
+    private StudentListComponent studentListComponent;
+
+    public StudentView(StudentService studentService) {
+        this.studentService = studentService;
+
         setSizeFull();
         setPadding(true);
 
@@ -23,10 +28,8 @@ public class StudentView extends VerticalLayout {
         horizontalLayout.setSizeFull();
         horizontalLayout.setSpacing(true);
 
-        // Add both sections to horizontal layout
         horizontalLayout.add(createRegistrationSection(), createStudentListSection());
 
-        // Add horizontal layout to main content
         content.add(horizontalLayout);
 
         return content;
@@ -41,7 +44,10 @@ public class StudentView extends VerticalLayout {
         com.vaadin.flow.component.html.H3 registrationTitle =
                 new com.vaadin.flow.component.html.H3("Student Registration");
         registrationSection.add(registrationTitle);
-        registrationSection.add(new StudentRegistrationForm());
+
+        registrationForm = new StudentRegistrationForm(studentService, this::refreshStudentList);
+
+        registrationSection.add(registrationForm);
 
         return registrationSection;
     }
@@ -56,16 +62,15 @@ public class StudentView extends VerticalLayout {
                 new com.vaadin.flow.component.html.H3("Student List");
         listSection.add(listTitle);
 
-        // Placeholder for student list
-        Div studentListPlaceholder = new Div(new Text("Student list will be displayed here"));
-        studentListPlaceholder.getStyle()
-                .set("border", "1px dashed #ccc")
-                .set("padding", "20px")
-                .set("text-align", "center")
-                .set("color", "#666")
-                .set("min-height", "200px");
-        listSection.add(studentListPlaceholder);
+        studentListComponent = new StudentListComponent(studentService);
+        listSection.add(studentListComponent);
 
         return listSection;
+    }
+
+    private void refreshStudentList() {
+        if (studentListComponent != null) {
+            studentListComponent.refreshData();
+        }
     }
 }

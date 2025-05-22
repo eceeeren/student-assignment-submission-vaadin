@@ -1,5 +1,6 @@
 package com.example.application.submission.ui.view;
 
+import com.example.application.submission.service.StudentService;
 import com.example.application.submission.ui.view.assignment.AssignmentView;
 import com.example.application.submission.ui.view.student.StudentView;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,7 +17,11 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class SubmissionView extends VerticalLayout {
 
-    public SubmissionView() {
+    private final StudentService studentService;
+
+    public SubmissionView(StudentService studentService) {
+        this.studentService = studentService;
+
         setSizeFull();
         setPadding(true);
         setSpacing(true);
@@ -28,7 +33,7 @@ public class SubmissionView extends VerticalLayout {
         TabSheet tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        tabSheet.add("Students", new StudentView());
+        tabSheet.add("Students", new StudentView(studentService));
 
         tabSheet.add("Assignments", new AssignmentView());
 
