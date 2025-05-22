@@ -1,5 +1,6 @@
 package com.example.application.assignment.ui.view;
 
+import com.example.application.assignment.ui.view.student.StudentView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -28,12 +29,10 @@ public class SubmissionView extends VerticalLayout {
         TabSheet tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        tabSheet.add("Dashboard",
-                new Div(new Text("This is the Dashboard tab content")));
-        tabSheet.add("Payment",
-                new Div(new Text("This is the Payment tab content")));
-        tabSheet.add("Shipping",
-                new Div(new Text("This is the Shipping tab content")));
+        tabSheet.add("Students", new StudentView());
+
+        tabSheet.add("Assignments",
+                new Div(new Text("This is the Assignment tab content")));
 
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_BORDERED);
         return tabSheet;
