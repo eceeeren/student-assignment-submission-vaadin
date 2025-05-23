@@ -1,5 +1,6 @@
 package com.example.application.submission.ui.view;
 
+import com.example.application.submission.service.AssignmentService;
 import com.example.application.submission.service.StudentService;
 import com.example.application.submission.ui.view.assignment.AssignmentView;
 import com.example.application.submission.ui.view.student.StudentView;
@@ -18,9 +19,14 @@ import jakarta.annotation.security.PermitAll;
 public class SubmissionView extends VerticalLayout {
 
     private final StudentService studentService;
+    private final AssignmentService assignmentService;
 
-    public SubmissionView(StudentService studentService) {
+    private StudentView studentView;
+    private AssignmentView assignmentView;
+
+    public SubmissionView(StudentService studentService, AssignmentService assignmentService) {
         this.studentService = studentService;
+        this.assignmentService = assignmentService;
 
         setSizeFull();
         setPadding(true);
@@ -33,9 +39,12 @@ public class SubmissionView extends VerticalLayout {
         TabSheet tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        tabSheet.add("Students", new StudentView(studentService));
+        assignmentView = new AssignmentView(assignmentService, studentService);
 
-        tabSheet.add("Assignments", new AssignmentView());
+        studentView = new StudentView(studentService, () -> assignmentView.refreshStudentsInForm());
+
+        tabSheet.add("Students", studentView);
+        tabSheet.add("Assignments", assignmentView);
 
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_BORDERED);
         return tabSheet;

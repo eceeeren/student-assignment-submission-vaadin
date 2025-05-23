@@ -38,10 +38,6 @@ public class StudentRegistrationForm extends Div {
         binder.setBean(new Student());
     }
 
-    public StudentRegistrationForm(StudentService studentService) {
-        this(studentService, null);
-    }
-
     private void createFields() {
         name = new TextField("Name");
         name.setRequired(true);
@@ -70,9 +66,7 @@ public class StudentRegistrationForm extends Div {
                 .asRequired("Email is required")
                 .bind(Student::getEmail, Student::setEmail);
 
-        binder.addStatusChangeListener(event -> {
-            submitButton.setEnabled(binder.isValid());
-        });
+        binder.addStatusChangeListener(event -> submitButton.setEnabled(binder.isValid()));
     }
 
     private void createLayout() {

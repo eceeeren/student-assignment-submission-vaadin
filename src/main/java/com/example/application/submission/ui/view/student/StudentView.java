@@ -7,11 +7,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 public class StudentView extends VerticalLayout {
 
     private final StudentService studentService;
-    private StudentRegistrationForm registrationForm;
+    private final Runnable onStudentAddedCallback;
     private StudentListComponent studentListComponent;
 
-    public StudentView(StudentService studentService) {
+    public StudentView(StudentService studentService, Runnable onStudentAddedCallback) {
         this.studentService = studentService;
+        this.onStudentAddedCallback = onStudentAddedCallback;
 
         setSizeFull();
         setPadding(true);
@@ -45,7 +46,12 @@ public class StudentView extends VerticalLayout {
                 new com.vaadin.flow.component.html.H3("Student Registration");
         registrationSection.add(registrationTitle);
 
-        registrationForm = new StudentRegistrationForm(studentService, this::refreshStudentList);
+        StudentRegistrationForm registrationForm = new StudentRegistrationForm(studentService, () -> {
+            refreshStudentList();
+            if (onStudentAddedCallback != null) {
+                onStudentAddedCallback.run();
+            }
+        });
 
         registrationSection.add(registrationForm);
 

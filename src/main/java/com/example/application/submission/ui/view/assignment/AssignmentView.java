@@ -1,13 +1,20 @@
 package com.example.application.submission.ui.view.assignment;
 
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.example.application.submission.service.AssignmentService;
+import com.example.application.submission.service.StudentService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class AssignmentView extends VerticalLayout {
 
-    public AssignmentView() {
+    private final AssignmentService assignmentService;
+    private final StudentService studentService;
+    private AssignmentRegistrationForm registrationForm;
+    private AssignmentListView assignmentListView;
+
+    public AssignmentView(AssignmentService assignmentService, StudentService studentService) {
+        this.assignmentService = assignmentService;
+        this.studentService = studentService;
+
         setSizeFull();
         setPadding(true);
 
@@ -19,15 +26,11 @@ public class AssignmentView extends VerticalLayout {
         content.setSizeFull();
         content.setPadding(false);
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.setSizeFull();
-        horizontalLayout.setSpacing(true);
+        VerticalLayout registrationSection = createRegistrationSection();
+        VerticalLayout listSection = createAssignmentListSection();
 
-        // Add both sections to horizontal layout
-        horizontalLayout.add(createRegistrationSection(), createAssignmentListSection());
-
-        // Add horizontal layout to main content
-        content.add(horizontalLayout);
+        content.add(registrationSection, listSection);
+        content.expand(listSection);
 
         return content;
     }
@@ -36,12 +39,19 @@ public class AssignmentView extends VerticalLayout {
         VerticalLayout registrationSection = new VerticalLayout();
         registrationSection.setPadding(false);
         registrationSection.setSpacing(true);
-        registrationSection.setWidth("50%");
+        registrationSection.setWidthFull();
 
         com.vaadin.flow.component.html.H3 registrationTitle =
                 new com.vaadin.flow.component.html.H3("Assignment Registration");
         registrationSection.add(registrationTitle);
-        registrationSection.add(new AssignmentRegistrationForm());
+
+        registrationForm = new AssignmentRegistrationForm(
+                assignmentService,
+                studentService,
+                this::refreshAssignmentList
+        );
+        registrationForm.setWidthFull();
+        registrationSection.add(registrationForm);
 
         return registrationSection;
     }
@@ -50,22 +60,29 @@ public class AssignmentView extends VerticalLayout {
         VerticalLayout listSection = new VerticalLayout();
         listSection.setPadding(false);
         listSection.setSpacing(true);
-        listSection.setWidth("50%");
+        listSection.setSizeFull();
 
         com.vaadin.flow.component.html.H3 listTitle =
                 new com.vaadin.flow.component.html.H3("Assignment List");
         listSection.add(listTitle);
 
-        // Placeholder for Assignment list
-        Div assignmentListPlaceholder = new Div(new Text("Assignment list will be displayed here"));
-        assignmentListPlaceholder.getStyle()
-                .set("border", "1px dashed #ccc")
-                .set("padding", "20px")
-                .set("text-align", "center")
-                .set("color", "#666")
-                .set("min-height", "200px");
-        listSection.add(assignmentListPlaceholder);
+        assignmentListView = new AssignmentListView(assignmentService);
+        assignmentListView.setSizeFull();
+        listSection.add(assignmentListView);
+        listSection.expand(assignmentListView);
 
         return listSection;
+    }
+
+    private void refreshAssignmentList() {
+        if (assignmentListView != null) {
+            assignmentListView.refreshData();
+        }
+    }
+
+    public void refreshStudentsInForm() {
+        if (registrationForm != null) {
+            registrationForm.refreshStudents();
+        }
     }
 }
