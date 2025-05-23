@@ -18,6 +18,7 @@ import com.vaadin.flow.server.menu.MenuConfiguration;
 import com.vaadin.flow.server.menu.MenuEntry;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import static com.vaadin.flow.theme.lumo.LumoUtility.*;
 
@@ -62,8 +63,9 @@ public final class MainLayout extends AppLayout {
     }
 
     private Component createUserMenu() {
-        // TODO Replace with real user information and actions
-        var avatar = new Avatar("John Smith");
+        String username = getCurrentUsername();
+
+        var avatar = new Avatar(username);
         avatar.addThemeVariants(AvatarVariant.LUMO_XSMALL);
         avatar.addClassNames(Margin.Right.SMALL);
         avatar.setColorIndex(5);
@@ -73,7 +75,7 @@ public final class MainLayout extends AppLayout {
         userMenu.addClassNames(Margin.MEDIUM);
 
         var userMenuItem = userMenu.addItem(avatar);
-        userMenuItem.add("John Smith");
+        userMenuItem.add(username);
         userMenuItem.getSubMenu().addItem("View Profile").setEnabled(false);
         userMenuItem.getSubMenu().addItem("Manage Settings").setEnabled(false);
         userMenuItem.getSubMenu().addItem("Logout",
@@ -82,4 +84,9 @@ public final class MainLayout extends AppLayout {
         return userMenu;
     }
 
+    private String getCurrentUsername() {
+        return authenticationContext.getAuthenticatedUser(UserDetails.class)
+                .map(UserDetails::getUsername)
+                .orElse("Unknown User");
+    }
 }
