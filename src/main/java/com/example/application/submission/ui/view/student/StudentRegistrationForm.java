@@ -13,7 +13,9 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import jakarta.annotation.security.RolesAllowed;
 
+@RolesAllowed("ADMIN")
 public class StudentRegistrationForm extends Div {
 
     private final StudentService studentService;

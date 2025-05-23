@@ -16,9 +16,11 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
 
+@RolesAllowed("ADMIN")
 public class AssignmentRegistrationForm extends Div {
 
     private final AssignmentService assignmentService;

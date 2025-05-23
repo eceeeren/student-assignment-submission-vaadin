@@ -3,17 +3,22 @@ package com.example.application.submission.ui.view.assignment;
 import com.example.application.submission.service.AssignmentService;
 import com.example.application.submission.service.StudentService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 public class AssignmentView extends VerticalLayout {
 
     private final AssignmentService assignmentService;
     private final StudentService studentService;
+    private final AuthenticationContext authenticationContext;
     private AssignmentRegistrationForm registrationForm;
     private AssignmentListView assignmentListView;
 
-    public AssignmentView(AssignmentService assignmentService, StudentService studentService) {
+    public AssignmentView(AssignmentService assignmentService,
+                          StudentService studentService,
+                          AuthenticationContext authenticationContext) {
         this.assignmentService = assignmentService;
         this.studentService = studentService;
+        this.authenticationContext = authenticationContext;
 
         setSizeFull();
         setPadding(true);
@@ -26,11 +31,17 @@ public class AssignmentView extends VerticalLayout {
         content.setSizeFull();
         content.setPadding(false);
 
-        VerticalLayout registrationSection = createRegistrationSection();
-        VerticalLayout listSection = createAssignmentListSection();
+        if (authenticationContext.hasRole("ADMIN")) {
+            VerticalLayout registrationSection = createRegistrationSection();
+            VerticalLayout listSection = createAssignmentListSection();
 
-        content.add(registrationSection, listSection);
-        content.expand(listSection);
+            content.add(registrationSection, listSection);
+            content.expand(listSection);
+        } else {
+            VerticalLayout listSection = createAssignmentListSection();
+            content.add(listSection);
+            content.expand(listSection);
+        }
 
         return content;
     }

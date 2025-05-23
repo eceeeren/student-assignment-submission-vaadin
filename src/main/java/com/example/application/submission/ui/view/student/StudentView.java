@@ -3,15 +3,20 @@ package com.example.application.submission.ui.view.student;
 import com.example.application.submission.service.StudentService;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 public class StudentView extends VerticalLayout {
 
     private final StudentService studentService;
+    private final AuthenticationContext authenticationContext;
     private final Runnable onStudentAddedCallback;
     private StudentListComponent studentListComponent;
 
-    public StudentView(StudentService studentService, Runnable onStudentAddedCallback) {
+    public StudentView(StudentService studentService,
+                       AuthenticationContext authenticationContext,
+                       Runnable onStudentAddedCallback) {
         this.studentService = studentService;
+        this.authenticationContext = authenticationContext;
         this.onStudentAddedCallback = onStudentAddedCallback;
 
         setSizeFull();
@@ -25,13 +30,27 @@ public class StudentView extends VerticalLayout {
         content.setSizeFull();
         content.setPadding(false);
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.setSizeFull();
-        horizontalLayout.setSpacing(true);
+        if (authenticationContext.hasRole("ADMIN")) {
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setSizeFull();
+            horizontalLayout.setSpacing(true);
+            horizontalLayout.add(createRegistrationSection(), createStudentListSection());
+            content.add(horizontalLayout);
+        } else {
+            VerticalLayout listSection = new VerticalLayout();
+            listSection.setPadding(false);
+            listSection.setSpacing(true);
+            listSection.setSizeFull();
 
-        horizontalLayout.add(createRegistrationSection(), createStudentListSection());
+            com.vaadin.flow.component.html.H3 listTitle =
+                    new com.vaadin.flow.component.html.H3("Student List");
+            listSection.add(listTitle);
 
-        content.add(horizontalLayout);
+            studentListComponent = new StudentListComponent(studentService);
+            listSection.add(studentListComponent);
+
+            content.add(listSection);
+        }
 
         return content;
     }
